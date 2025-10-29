@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:movie/features/home/components/popular/popular_section.dart';
 import 'package:movie/features/home/components/tv_series/tv_series_section.dart';
 import 'package:movie/features/home/components/you_may_like/you_may_like_section.dart';
@@ -14,6 +15,20 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController _searchController = TextEditingController();
   List<dynamic> searchResults = [];
+  String? userName;  // لإظهار اسم المستخدم في الـ AppBar
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData(); // تحميل اسم المستخدم عند فتح الصفحة
+  }
+
+  Future<void> _loadUserData() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      userName = prefs.getString('user_name');
+    });
+  }
 
   @override
   void dispose() {
@@ -54,9 +69,9 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         title: ListTile(
           contentPadding: EdgeInsets.zero,
-          title: const Text(
-            "Hello User",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          title: Text(
+            userName != null ? "Hello $userName" : "Hello User",
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
           ),
           subtitle: const Text(
             "Enjoy your favorite movies",
@@ -86,9 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       icon: const Icon(Icons.clear, color: Colors.black),
                       onPressed: () {
                         _searchController.clear();
-                        _searchMovies(
-                          "",
-                        );
+                        _searchMovies("");
                       },
                     )
                   : null,

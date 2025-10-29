@@ -4,20 +4,20 @@ class YouMayLikeCard extends StatelessWidget {
   final String title;
   final List<String> categories;
   final String imageUrl;
-  final VoidCallback onTap; // إضافة دالة onTap 
+  final VoidCallback onTap;
 
   const YouMayLikeCard({
     required this.title,
     required this.categories,
     required this.imageUrl,
-    required this.onTap, // استلام دالة onTap
+    required this.onTap,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap, // استدعاء الدالة عند النقر على الكارد
+      onTap: onTap,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -34,12 +34,15 @@ class YouMayLikeCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8.0),
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 14.0,
-              fontWeight: FontWeight.normal,
-              color: Colors.white,
+          ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 140, maxHeight: 140),
+            child: Text(
+              title,
+              style: const TextStyle(
+                fontSize: 14.0,
+                fontWeight: FontWeight.normal,
+                color: Colors.white,
+              ),
             ),
           ),
           Text(

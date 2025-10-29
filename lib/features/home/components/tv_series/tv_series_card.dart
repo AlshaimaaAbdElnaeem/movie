@@ -49,12 +49,15 @@ class TvSeriesCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8.0),
-          Text(
-            tvSeries['name'] ?? 'Unknown Title',
-            style: const TextStyle(
-              fontSize: 14.0,
-              fontWeight: FontWeight.normal,
-              color: Colors.white,
+          ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 200, maxHeight: 200),
+            child: Text(
+              tvSeries['name'] ?? 'Unknown Title',
+              style: const TextStyle(
+                fontSize: 14.0,
+                fontWeight: FontWeight.normal,
+                color: Colors.white,
+              ),
             ),
           ),
           Text(

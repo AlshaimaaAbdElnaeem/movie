@@ -11,7 +11,6 @@ class MyNavBar extends StatefulWidget {
 }
 
 class _MyNavBarState extends State<MyNavBar> {
-
   int currentIndex = 0;
   List screen = [
     const MyHomePage(), const MyWishList(), const MyProfile()
@@ -29,8 +28,14 @@ class _MyNavBarState extends State<MyNavBar> {
             backgroundColor: const Color(0xFFCD3E10),
             elevation: 5.0,
             type: BottomNavigationBarType.fixed,
-            selectedIconTheme: const IconThemeData(color: Colors.white, size: 30.0),
-            unselectedIconTheme: const IconThemeData(color: Colors.white, size: 25.0),
+            selectedIconTheme: const IconThemeData(
+              color: Colors.white,
+              size: 30.0,
+            ),
+            unselectedIconTheme: const IconThemeData(
+              color: Colors.white,
+              size: 25.0,
+            ),
             showSelectedLabels: false,
             showUnselectedLabels: false,
 

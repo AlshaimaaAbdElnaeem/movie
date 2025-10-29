@@ -49,12 +49,15 @@ class PopularCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8.0),
-          Text(
-            movie['title'] ?? 'Unknown Title',
-            style: const TextStyle(
-              fontSize: 16.0,
-              fontWeight: FontWeight.normal,
-              color: Colors.white,
+          ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 200, maxHeight: 200),
+            child: Text(
+              movie['title'] ?? 'Unknown Title',
+              style: const TextStyle(
+                fontSize: 16.0,
+                fontWeight: FontWeight.normal,
+                color: Colors.white,
+              ),
             ),
           ),
           Text(
