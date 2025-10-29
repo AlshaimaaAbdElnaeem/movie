@@ -1,7 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:movie/features/home/components/popular/popular_section.dart';
+import 'package:movie/features/home/components/tv_series/tv_series_section.dart';
+import 'package:movie/features/home/components/you_may_like/you_may_like_section.dart';
+import 'package:movie/features/home/data/apis/get_list.dart';
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  final TextEditingController _searchController = TextEditingController();
+  List<dynamic> searchResults = [];
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _searchMovies(String query) async {
+    if (query.isEmpty) {
+      setState(() {
+        searchResults = [];
+      });
+      return;
+    }
+
+    var response = await MoviesService().fetchMovies();
+    var filteredResults = response.where((movie) {
+      return movie['title'].toLowerCase().contains(query.toLowerCase());
+    }).toList();
+
+    setState(() {
+      searchResults = filteredResults;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,50 +68,77 @@ class MyHomePage extends StatelessWidget {
           ),
         ),
       ),
-      body: Padding(
+      body: ListView(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TextField(
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: const Color.fromRGBO(70, 69, 69, 1),
-                hintText: 'Search Movie...',
-                prefixIcon: const Icon(Icons.search, color: Colors.black),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(18.0),
-                  borderSide: BorderSide.none,
-                ),
+        children: [
+          TextField(
+            controller: _searchController,
+            onChanged: (value) {
+              _searchMovies(value);
+            },
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: const Color.fromRGBO(70, 69, 69, 1),
+              hintText: 'Search Movie...',
+              prefixIcon: const Icon(Icons.search, color: Colors.black),
+              suffixIcon: _searchController.text.isNotEmpty
+                  ? IconButton(
+                      icon: const Icon(Icons.clear, color: Colors.black),
+                      onPressed: () {
+                        _searchController.clear();
+                        _searchMovies(
+                          "",
+                        );
+                      },
+                    )
+                  : null,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(18.0),
+                borderSide: BorderSide.none,
               ),
             ),
-            // SizedBox(height: 20),
+          ),
+
+          if (searchResults.isNotEmpty)
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 20.0),
-              child: Text(
-                "Popular Movies",
-                style: TextStyle(fontSize: 20),
-                // textAlign: TextAlign.left,
-              ),
+              child: Text("Search Results", style: TextStyle(fontSize: 20)),
             ),
-            card()
-          ],
-        ),
+          if (searchResults.isNotEmpty)
+            Column(
+              children: searchResults.map((movie) {
+                return ListTile(
+                  title: Text(movie['title']),
+                  subtitle: Text(movie['overview']),
+                  leading: Image.network(
+                    'https://image.tmdb.org/t/p/w500${movie['poster_path']}',
+                  ),
+                );
+              }).toList(),
+            ),
+          if (searchResults.isEmpty)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20.0),
+                  child: Text("Popular Movies", style: TextStyle(fontSize: 20)),
+                ),
+                PopularSection(),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20.0),
+                  child: Text("TV Series", style: TextStyle(fontSize: 20)),
+                ),
+                TvSeriesSection(),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20.0),
+                  child: Text("You May Like", style: TextStyle(fontSize: 20)),
+                ),
+                YouMayLikeSection(),
+              ],
+            ),
+        ],
       ),
     );
   }
-}
-
-Widget card () {
-  return Container(
-    width: 150,
-    height: 250,
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(15.0),
-      image: const DecorationImage(
-        image: AssetImage('assets/images/movie_poster.png'),
-        fit: BoxFit.cover,
-      ),
-    ),
-  );
 }
