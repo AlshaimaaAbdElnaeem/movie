@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:movie/features/details/details_screen.dart';
 import 'package:movie/features/home/presentation/home_screen.dart';
+import 'package:movie/features/profile/user_profile.dart';
 import 'package:movie/features/wishlist/wishlist_screen.dart';
 
 class MyNavBar extends StatefulWidget {
@@ -14,7 +14,7 @@ class _MyNavBarState extends State<MyNavBar> {
 
   int currentIndex = 0;
   List screen = [
-    const MyHomePage(), const MyWishList(), const MyDetailsPage()
+    const MyHomePage(), const MyWishList(), const MyProfile()
   ];
 
   @override
