@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movie/features/navigation/nav_bar.dart';
+import 'package:movie/features/splash/presentation/screens/splash_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -13,14 +13,19 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        fontFamily: 'Roboto',  // تخصيص الخط
-        brightness: Brightness.dark,  // or light
+        fontFamily: 'Roboto', // تخصيص الخط
+        brightness: Brightness.dark, // or light
         // appBarTheme: const AppBarTheme(
         //   backgroundColor: Color.fromARGB(19, 19, 19, 19),  // تخصيص لون الـ AppBar
         // ),
-        scaffoldBackgroundColor: const Color.fromARGB(19, 19, 19, 19),  // تخصيص لون الخلفية العامة
+        scaffoldBackgroundColor: const Color.fromARGB(
+          19,
+          19,
+          19,
+          19,
+        ), // تخصيص لون الخلفية العامة
       ),
-      home: MyNavBar(),
+      home: const SplashScreen(),
     );
   }
 }
