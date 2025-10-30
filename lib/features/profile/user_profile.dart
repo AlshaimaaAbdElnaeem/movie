@@ -22,6 +22,7 @@ class _MyProfileState extends State<MyProfile> {
 
   Future<void> _loadUserData() async {
     final prefs = await SharedPreferences.getInstance();
+    if (!mounted) return;
     setState(() {
       userName = prefs.getString('user_name');
       userEmail = prefs.getString('user_email');
@@ -36,6 +37,7 @@ class _MyProfileState extends State<MyProfile> {
     await prefs.remove('user_email');
     await prefs.remove('user_profile_image');
 
+    if (!mounted) return;
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (_) => const SignInPage()),
@@ -64,7 +66,7 @@ class _MyProfileState extends State<MyProfile> {
                         backgroundImage: userProfileImage != null
                             ? NetworkImage(userProfileImage!)
                             : const AssetImage('assets/images/user_avatar.png')
-                                as ImageProvider,
+                                  as ImageProvider,
                       ),
                       const SizedBox(height: 20),
                       Text(

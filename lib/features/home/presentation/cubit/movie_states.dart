@@ -11,3 +11,7 @@ class MovieErrorState extends MovieStates {
   final String error;
   MovieErrorState(this.error);
 }
+class MovieWishlistUpdatedState extends MovieStates {
+  final List<int> wishlist;
+  MovieWishlistUpdatedState({required this.wishlist});
+}

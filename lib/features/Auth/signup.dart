@@ -105,11 +105,11 @@ class _SignUpPageState extends State<SignUpPage> {
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-                        onPressed: () async {
+                        onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             if (emailController.text !=
                                 confirmEmailController.text) {
-                              if (!mounted) return;
+                              // show a quick validation message synchronously
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text('Emails do not match!'),
@@ -118,15 +118,10 @@ class _SignUpPageState extends State<SignUpPage> {
                               return;
                             }
 
-                            await _saveUser();
-                            if (!mounted) return;
-
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => const MyNavBar(),
-                              ),
-                            );
+                            // perform async save and navigate without using
+                            // this BuildContext across an await in the same
+                            // callback to satisfy the analyzer.
+                            _performSignUp();
                           }
                         },
                         child: const Text('Sign Up'),
@@ -202,5 +197,15 @@ class _SignUpPageState extends State<SignUpPage> {
     await prefs.setString('user_name', nameController.text.trim());
     await prefs.setString('user_email', emailController.text.trim());
     await prefs.setString('user_password', passwordController.text);
+  }
+
+  // Separate async operation to avoid using BuildContext across async gaps
+  Future<void> _performSignUp() async {
+    await _saveUser();
+    if (!mounted) return;
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (_) => const MyNavBar()),
+    );
   }
 }
