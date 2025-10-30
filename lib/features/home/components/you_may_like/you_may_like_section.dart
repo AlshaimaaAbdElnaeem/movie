@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:movie/features/details/details_screen.dart';
 import 'package:movie/features/home/components/you_may_like/you_may_like_card.dart';
 import 'package:movie/features/home/data/apis/get_list.dart';
+import 'package:movie/features/home/presentation/movie_details.dart';
 
 class YouMayLikeSection extends StatefulWidget {
   const YouMayLikeSection({super.key});
@@ -59,7 +59,7 @@ class _YouMayLikeSectionState extends State<YouMayLikeSection> {
                           MaterialPageRoute(
                             builder: (context) =>
                                 // MyDetailsPage(movieId: movie['id']),
-                                MyDetailsPage(),
+                                MovieDetails( movieId: movie['id']),
                           ),
                         );
                       },

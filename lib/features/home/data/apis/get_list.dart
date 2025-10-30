@@ -1,8 +1,9 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:movie/features/home/data/models/movie_details/movie_details.dart';
 
 class MoviesService {
-  final String apiUrl = 'https://api.themoviedb.org/3/movie/popular?api_key=29cf44b93ca83bf48d9356395476f7ad';
+ static const String apiUrl = 'https://api.themoviedb.org/3/movie/popular?api_key=29cf44b93ca83bf48d9356395476f7ad';
   final String genresApiUrl = 'https://api.themoviedb.org/3/genre/movie/list?api_key=29cf44b93ca83bf48d9356395476f7ad';
   final String tvSeriesApiUrl = 'https://api.themoviedb.org/3/tv/popular?api_key=29cf44b93ca83bf48d9356395476f7ad';
   final String tvGenresApiUrl = 'https://api.themoviedb.org/3/genre/tv/list?api_key=29cf44b93ca83bf48d9356395476f7ad';
@@ -83,4 +84,19 @@ class MoviesService {
       throw Exception('Error: $e');
     }
   }
-}
+
+  Future<MovieDetailsModel> fetchMovieDetails(int id) async {
+    final String url = 'https://api.themoviedb.org/3/movie/$id?api_key=29cf44b93ca83bf48d9356395476f7ad'; 
+    
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body);
+        return MovieDetailsModel.fromJson(data);
+      } else {
+        throw Exception('Failed to load movie details');
+      }
+    } catch (e) {
+      throw Exception('Error: $e');
+    }
+}}

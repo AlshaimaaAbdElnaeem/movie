@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:movie/features/details/details_screen.dart';
 import 'package:movie/features/home/data/apis/get_list.dart';
 import 'package:movie/features/home/components/tv_series/tv_series_card.dart';
+import 'package:movie/features/home/presentation/movie_details.dart';
 
 class TvSeriesSection extends StatefulWidget {
   const TvSeriesSection({super.key});
@@ -53,7 +53,8 @@ class _TvSeriesSectionState extends State<TvSeriesSection> {
                           MaterialPageRoute(
                             builder: (context) =>
                                 // MyDetailsPage(tvSeriesId: tvSeries['id']),
-                                MyDetailsPage(),
+                                
+                                MovieDetails(movieId: tvSeries['id'],),
                           ),
                         );
                       },
