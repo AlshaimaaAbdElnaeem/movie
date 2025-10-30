@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie/features/home/presentation/cubit/movie_details_cubit/movie_cubit.dart' show MovieCubit;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:movie/features/home/components/popular/popular_section.dart';
 import 'package:movie/features/home/components/tv_series/tv_series_section.dart';
@@ -15,7 +17,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController _searchController = TextEditingController();
   List<dynamic> searchResults = [];
-  String? userName;  // لإظهار اسم المستخدم في الـ AppBar
+  String? userName; // لإظهار اسم المستخدم في الـ AppBar
 
   @override
   void initState() {
@@ -147,7 +149,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   padding: const EdgeInsets.symmetric(vertical: 20.0),
                   child: Text("You May Like", style: TextStyle(fontSize: 20)),
                 ),
-                YouMayLikeSection(),
+                BlocProvider(
+                  create: (context) => MovieCubit(),
+                  child: YouMayLikeSection(),
+                ),
               ],
             ),
         ],

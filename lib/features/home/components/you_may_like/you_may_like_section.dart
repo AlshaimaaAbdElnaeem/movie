@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie/features/home/components/you_may_like/you_may_like_card.dart';
 import 'package:movie/features/home/data/apis/get_list.dart';
+import 'package:movie/features/home/presentation/cubit/movie_details_cubit/movie_cubit.dart';
 import 'package:movie/features/home/presentation/movie_details.dart';
 
 class YouMayLikeSection extends StatefulWidget {
@@ -59,7 +61,10 @@ class _YouMayLikeSectionState extends State<YouMayLikeSection> {
                           MaterialPageRoute(
                             builder: (context) =>
                                 // MyDetailsPage(movieId: movie['id']),
-                                MovieDetails( movieId: movie['id']),
+                                BlocProvider(
+                                  create: (context) => MovieCubit(),
+                                  child: MovieDetails(movieId: movie['id']),
+                                ),
                           ),
                         );
                       },

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie/features/home/data/apis/get_list.dart';
 import 'package:movie/features/home/components/tv_series/tv_series_card.dart';
-import 'package:movie/features/home/presentation/movie_details.dart';
+import 'package:movie/features/home/presentation/tv_details.dart';
 
 class TvSeriesSection extends StatefulWidget {
   const TvSeriesSection({super.key});
@@ -47,14 +47,14 @@ class _TvSeriesSectionState extends State<TvSeriesSection> {
                       tvSeries: tvSeries,
                       genres: tvGenres,
                       onTap: () {
-                        // هنا يمكنك إضافة منطق عرض تفاصيل السلسلة مثل الانتقال إلى شاشة جديدة.
+                    
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) =>
                                 // MyDetailsPage(tvSeriesId: tvSeries['id']),
                                 
-                                MovieDetails(movieId: tvSeries['id'],),
+                                TvDetails(tvId: tvSeries['id'],),
                           ),
                         );
                       },

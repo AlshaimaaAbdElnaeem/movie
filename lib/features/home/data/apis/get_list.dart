@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:movie/features/home/data/models/movie_details/movie_details.dart';
+import 'package:movie/features/home/data/models/tv_details_model/tv_details_model.dart';
 
 class MoviesService {
  static const String apiUrl = 'https://api.themoviedb.org/3/movie/popular?api_key=29cf44b93ca83bf48d9356395476f7ad';
@@ -99,4 +100,20 @@ class MoviesService {
     } catch (e) {
       throw Exception('Error: $e');
     }
-}}
+}
+Future<TvDetailsModel> fetchTvDetails(int id) async {
+    final String url = 'https://api.themoviedb.org/3/tv/$id?api_key=29cf44b93ca83bf48d9356395476f7ad'; 
+    
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body);
+        return TvDetailsModel.fromJson(data);
+      } else {
+        throw Exception('Failed to load TV details');
+      }
+    } catch (e) {
+      throw Exception('Error: $e');
+    }
+}
+}

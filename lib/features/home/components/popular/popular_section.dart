@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:movie/features/details/details_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie/features/home/components/popular/popular_card.dart';
 import 'package:movie/features/home/data/apis/get_list.dart';
+import 'package:movie/features/home/presentation/cubit/movie_details_cubit/movie_cubit.dart';
+import 'package:movie/features/home/presentation/movie_details.dart';
 
 class PopularSection extends StatefulWidget {
   const PopularSection({super.key});
@@ -52,7 +54,10 @@ class _PopularSectionState extends State<PopularSection> {
                           MaterialPageRoute(
                             builder: (context) =>
                                 // MovieDetailPage(movieId: movie['id']),
-                                MyDetailsPage(),
+                                BlocProvider(
+                                  create: (context) => MovieCubit(),
+                                  child: MovieDetails(movieId: movie['id']),
+                                ),
                           ),
                         );
                       },

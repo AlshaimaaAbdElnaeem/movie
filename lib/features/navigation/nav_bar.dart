@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie/features/home/presentation/cubit/movie_details_cubit/movie_cubit.dart';
 import 'package:movie/features/home/presentation/home_screen.dart';
 import 'package:movie/features/profile/user_profile.dart';
 import 'package:movie/features/wishlist/wishlist_screen.dart';
@@ -13,7 +15,10 @@ class MyNavBar extends StatefulWidget {
 class _MyNavBarState extends State<MyNavBar> {
   int currentIndex = 0;
   List screen = [
-    const MyHomePage(), const MyWishList(), const MyProfile()
+    const MyHomePage(),BlocProvider(
+      create: (context) => MovieCubit()..loadWishlist(),
+      child:const MyWishList(), ), 
+     const MyProfile()
   ];
 
   @override
