@@ -14,7 +14,9 @@ class _MyNavBarState extends State<MyNavBar> {
 
   int currentIndex = 0;
   List screen = [
-    const MyHomePage(), const MyWishList(), const MyDetailsPage()
+    const MyHomePage(),
+     const MyWishList(),
+      const MyDetailsPage()
   ];
 
   @override
