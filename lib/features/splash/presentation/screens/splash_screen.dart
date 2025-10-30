@@ -49,14 +49,14 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0A0A0A), // خلفية داكنة متناسقة مع المشروع
+     
       body: Center(
         child: FadeTransition(
           opacity: _fadeAnimation,
           child: Text(
             'Movie',
             style: const TextStyle(
-              color: Color(0xFFCD3E10), // اللون الأساسي للمشروع
+              color: Color(0xFFCD3E10), 
               fontSize: 45,
               fontWeight: FontWeight.bold,
               letterSpacing: 2,

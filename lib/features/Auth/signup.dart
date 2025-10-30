@@ -13,7 +13,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
   final nameController = TextEditingController();
   final emailController = TextEditingController();
-  final confirmEmailController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
   final passwordController = TextEditingController();
 
   bool obscure = true;
@@ -21,7 +21,7 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF121212),
+      // backgroundColor: const Color(0xFF121212),
       appBar: AppBar(
         title: const Text('Sign Up', style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.transparent,
@@ -74,17 +74,18 @@ class _SignUpPageState extends State<SignUpPage> {
                         false,
                         true,
                       ),
-                      userField(
-                        'Confirm Email',
-                        Icons.email_outlined,
-                        confirmEmailController,
-                        false,
-                        true,
-                      ),
+                    
                       userField(
                         'Password',
                         Icons.lock,
                         passwordController,
+                        true,
+                        false,
+                      ),
+                        userField(
+                        'Confirm password',
+                        Icons.lock,
+                        confirmPasswordController,
                         true,
                         false,
                       ),
@@ -107,12 +108,12 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
-                            if (emailController.text !=
-                                confirmEmailController.text) {
+                            if (passwordController.text !=
+                                confirmPasswordController.text) {
                               if (!mounted) return;
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
-                                  content: Text('Emails do not match!'),
+                                  content: Text('password do not match!'),
                                 ),
                               );
                               return;

@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie/core/theming/cubit/theme_cubit.dart';
+import 'package:movie/features/home/presentation/cubit/movie_details_cubit/movie_cubit.dart';
 import 'package:movie/features/splash/presentation/screens/splash_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:movie/features/navigation/nav_bar.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final themeCubit = ThemeCubit();
+  await themeCubit.loadTheme();
+  runApp(BlocProvider(create: (context) => ThemeCubit(), child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -16,20 +21,20 @@ class MyApp extends StatelessWidget {
       designSize: const Size(375, 812),
       minTextAdapt: true,
       splitScreenMode: true,
-      builder: (_ , child) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        fontFamily: 'Inter',  // تخصيص الخط
-        brightness: Brightness.dark,  // or light
-       
-        scaffoldBackgroundColor: const Color.fromARGB(19, 19, 19, 19), 
-      ),
-      home: const SplashScreen(),
+      builder: (_, child) {
+        return BlocBuilder<ThemeCubit, ThemeData>(
+          builder: (context, theme) {
+            return BlocProvider(
+              create: (context) => MovieCubit()..loadWishlist(),
+              child: MaterialApp(
+                debugShowCheckedModeBanner: false,
+                theme: theme,
+                home: const SplashScreen(),
+              ),
+            );
+          },
+        );
+      },
     );
   }
-
-    );
-}
-
 }

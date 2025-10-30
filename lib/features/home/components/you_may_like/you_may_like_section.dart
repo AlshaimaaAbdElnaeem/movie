@@ -61,9 +61,7 @@ class _YouMayLikeSectionState extends State<YouMayLikeSection> {
                           MaterialPageRoute(
                             builder: (context) =>
                                 // MyDetailsPage(movieId: movie['id']),
-                                BlocProvider(
-                                  create: (context) => MovieCubit(),
-                                  child: MovieDetails(movieId: movie['id']),
+                                   MovieDetails(movieId: movie['id'],
                                 ),
                           ),
                         );

@@ -56,7 +56,7 @@ class TvSeriesCard extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 14.0,
                 fontWeight: FontWeight.normal,
-                color: Colors.white,
+                // color: Colors.white,
               ),
             ),
           ),

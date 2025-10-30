@@ -20,10 +20,10 @@ class _SignInPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF121212),
+      // backgroundColor: const Color(0xFF121212),
       appBar: AppBar(
         title: const Text('Sign In', style: TextStyle(color: Colors.white)),
-        backgroundColor: Colors.transparent,
+        // backgroundColor: Colors.transparent,
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.white),
       ),
@@ -102,7 +102,7 @@ class _SignInPageState extends State<SignInPage> {
                         children: [
                           const Text(
                             "Don't have an account? ",
-                            style: TextStyle(color: Colors.white70),
+                            // style: TextStyle(color: Colors.white70),
                           ),
                           TextButton(
                             style: TextButton.styleFrom(
@@ -161,10 +161,10 @@ class _SignInPageState extends State<SignInPage> {
         },
         decoration: InputDecoration(
           filled: true,
-          fillColor: const Color(0xFF1E1E1E),
-          prefixIcon: Icon(icon, color: Colors.white70),
+          // fillColor: const Color(0xFF1E1E1E),
+          prefixIcon: Icon(icon, ),
           labelText: label,
-          labelStyle: const TextStyle(color: Colors.white70),
+          // labelStyle: const TextStyle(color: Colors.white70),
           contentPadding: const EdgeInsets.symmetric(
             vertical: 16.0,
             horizontal: 12.0,
@@ -177,7 +177,7 @@ class _SignInPageState extends State<SignInPage> {
               ? IconButton(
                   icon: Icon(
                     obscure ? Icons.visibility_off : Icons.visibility,
-                    color: Colors.white70,
+                    // color: Colors.white70,
                   ),
                   onPressed: () => setState(() => obscure = !obscure),
                 )

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie/core/theming/cubit/theme_cubit.dart';
 import 'package:movie/features/home/presentation/cubit/movie_details_cubit/movie_cubit.dart' show MovieCubit;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:movie/features/home/components/popular/popular_section.dart';
@@ -17,12 +18,12 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController _searchController = TextEditingController();
   List<dynamic> searchResults = [];
-  String? userName; // لإظهار اسم المستخدم في الـ AppBar
+  String? userName;
 
   @override
   void initState() {
     super.initState();
-    _loadUserData(); // تحميل اسم المستخدم عند فتح الصفحة
+    _loadUserData(); 
   }
 
   Future<void> _loadUserData() async {
@@ -60,6 +61,17 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: [
+            Switch(
+                value: BlocProvider.of<ThemeCubit>(context).isDark,
+                onChanged: (value) {
+                  BlocProvider.of<ThemeCubit>(context).toggleTheme();
+                  setState(() {
+                    
+                  });
+              
+          })
+        ],
         leading: Padding(
           padding: const EdgeInsets.only(left: 10.0, top: 5.0, bottom: 5.0),
           child: ClipOval(
@@ -95,7 +107,6 @@ class _MyHomePageState extends State<MyHomePage> {
             },
             decoration: InputDecoration(
               filled: true,
-              fillColor: const Color.fromRGBO(70, 69, 69, 1),
               hintText: 'Search Movie...',
               prefixIcon: const Icon(Icons.search, color: Colors.black),
               suffixIcon: _searchController.text.isNotEmpty

@@ -54,10 +54,9 @@ class _PopularSectionState extends State<PopularSection> {
                           MaterialPageRoute(
                             builder: (context) =>
                                 // MovieDetailPage(movieId: movie['id']),
-                                BlocProvider(
-                                  create: (context) => MovieCubit(),
-                                  child: MovieDetails(movieId: movie['id']),
-                                ),
+                                
+                                  MovieDetails(movieId: movie['id']),
+                                
                           ),
                         );
                       },

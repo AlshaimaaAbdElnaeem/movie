@@ -41,7 +41,6 @@ class YouMayLikeCard extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 14.0,
                 fontWeight: FontWeight.normal,
-                color: Colors.white,
               ),
             ),
           ),
@@ -50,7 +49,7 @@ class YouMayLikeCard extends StatelessWidget {
             style: const TextStyle(
               fontSize: 12.0,
               fontWeight: FontWeight.normal,
-              color: Colors.grey,
+              // color: Colors.grey,
             ),
           ),
         ],

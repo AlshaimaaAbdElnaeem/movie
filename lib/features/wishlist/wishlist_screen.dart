@@ -22,50 +22,51 @@ class _MyWishListState extends State<MyWishList> {
   @override
   void initState() {
     super.initState();
-    // load initial wishlist from the global cubit
-    WidgetsBinding.instance.addPostFrameCallback((_) {
       final cubit = BlocProvider.of<MovieCubit>(context);
-      _loadMoviesFromIds(cubit.wishlist);
-    });
+  if (cubit.wishlist.isEmpty) {
+    cubit.loadWishlist();
+  } else {
+    _loadMoviesFromIds(cubit.wishlist);
+  }
   }
 
   Future<void> _loadMoviesFromIds(List<int> ids) async {
-    setState(() {
-      _loading = true;
-    });
+    setState(() => _loading = true);
     _ids = List<int>.from(ids);
 
-    _movies = [];
-    for (final id in _ids) {
-      try {
-        final details = await _service.fetchMovieDetails(id);
-        _movies.add(details);
-      } catch (e) {
-        // ignore individual failures, continue with others
-      }
+    try {
+      final results = await Future.wait(
+        ids.map((id) async {
+          try {
+            return await _service.fetchMovieDetails(id);
+          } catch (_) {
+            return null;
+          }
+        }),
+      );
+
+      _movies = results.whereType<MovieDetailsModel>().toList();
+    } catch (e) {
+      debugPrint('Error loading wishlist movies: $e');
     }
 
     if (!mounted) return;
-    setState(() {
-      _loading = false;
-    });
+    setState(() => _loading = false);
   }
 
   Future<void> _removeFromWishlist(int movieId) async {
     final cubit = BlocProvider.of<MovieCubit>(context);
-    // Optimistic local update to avoid waiting on a possible hanging Future
+
     if (!mounted) return;
     setState(() {
       _movies.removeWhere((m) => m.id == movieId);
       _ids.remove(movieId);
     });
 
-    // call toggle without awaiting (prevents UI from hanging if cubit emits Loading globally)
     cubit.toggleWishlist(movieId);
 
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(const SnackBar(content: Text('Removed from wishlist')));
+    ScaffoldMessenger.of(context)
+        .showSnackBar(const SnackBar(content: Text('Removed from wishlist')));
   }
 
   @override
@@ -81,40 +82,42 @@ class _MyWishListState extends State<MyWishList> {
         child: _loading
             ? const Center(child: CircularProgressIndicator())
             : _movies.isEmpty
-            ? const Center(child: Text('No items in your wish list'))
-            : ListView.builder(
-                padding: const EdgeInsets.all(12.0),
-                itemCount: _movies.length,
-                itemBuilder: (context, index) {
-                  final movie = _movies[index];
-                  return Card(
-                    margin: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: ListTile(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => MovieDetails(movieId: movie.id!),
+                ? const Center(child: Text('No items in your wish list'))
+                : ListView.builder(
+                    padding: const EdgeInsets.all(12.0),
+                    itemCount: _movies.length,
+                    itemBuilder: (context, index) {
+                      final movie = _movies[index];
+                      return Card(
+                        margin: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: ListTile(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => MovieDetails(movieId: movie.id!),
+                              ),
+                            );
+                          },
+                          leading: movie.posterPath != null
+                              ? Image.network(
+                                  'https://image.tmdb.org/t/p/w200${movie.posterPath}',
+                                  width: 50,
+                                  fit: BoxFit.cover,
+                                )
+                              : const SizedBox(width: 50),
+                          title: Text(movie.title ?? 'Unknown Title'),
+                          subtitle: Text(movie.releaseDate ?? ''),
+                          trailing: IconButton(
+                            icon:
+                                const Icon(Icons.favorite, color: Colors.red),
+                            onPressed: () =>
+                                _removeFromWishlist(movie.id!),
                           ),
-                        );
-                      },
-                      leading: movie.posterPath != null
-                          ? Image.network(
-                              'https://image.tmdb.org/t/p/w200${movie.posterPath}',
-                              width: 50,
-                              fit: BoxFit.cover,
-                            )
-                          : const SizedBox(width: 50),
-                      title: Text(movie.title ?? 'Unknown Title'),
-                      subtitle: Text(movie.releaseDate ?? ''),
-                      trailing: IconButton(
-                        icon: const Icon(Icons.favorite, color: Colors.red),
-                        onPressed: () => _removeFromWishlist(movie.id!),
-                      ),
-                    ),
-                  );
-                },
-              ),
+                        ),
+                      );
+                    },
+                  ),
       ),
     );
   }

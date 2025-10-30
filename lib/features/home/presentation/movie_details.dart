@@ -58,7 +58,6 @@ class _MovieDetailsState extends State<MovieDetails> {
                   icon: Icon(
                     Icons.arrow_back_ios,
                     size: 30.sp,
-                    color: Colors.white,
                   ),
                 ),
               ),
@@ -78,7 +77,6 @@ class _MovieDetailsState extends State<MovieDetails> {
                         style: TextStyle(
                           fontSize: 25.sp,
                           fontWeight: FontWeight.bold,
-                          color: Colors.white,
                         ),
                         overflow: TextOverflow.ellipsis,
                       ),
